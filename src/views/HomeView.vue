@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="h-screen flex justify-center items-center flex-col">
     <input type="text" id="elastic" @keydown.down="handleArrowDown()" @keydown.up="handleArrowUp()"
-      @keydown.enter="handleEnter">
-    <ul>
+      @keydown.enter="handleEnter" class="w-80 h-12 border-2  p-4">
+    <ul class="w-80">
       <li v-for="(name, index) in matchedNames" :key="name" @click="navigateToProfile(name)"
-        :class="{ active: index === selectedIndex }" class="hover:bg-cyan-200">
+        :class="{ active: index === selectedIndex }" class="hover:bg-cyan-200 cursor-pointer p-4 border font-bold">
         {{ name }}
       </li>
     </ul>
@@ -75,5 +75,5 @@ export default {
 <style scoped>
 .active {
   background-color: rgb(165 243 252);
-}
+} 
 </style>
