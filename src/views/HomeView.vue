@@ -1,9 +1,11 @@
 <template>
   <div>
-    <input type="text" id="elastic">
+    <input type="text" id="elastic" @keydown.down="handleArrowDown()" @keydown.up="handleArrowUp()"
+      @keydown.enter="handleEnter">
     <ul>
-      <li v-for="name in matchedNames" :key="name">
-        <a @click="navigateToProfile(name)">{{ name }}</a>
+      <li v-for="(name, index) in matchedNames" :key="name" @click="navigateToProfile(name)"
+        :class="{ active: index === selectedIndex }" class="hover:bg-cyan-200">
+        {{ name }}
       </li>
     </ul>
   </div>
@@ -15,6 +17,7 @@ export default {
   data() {
     return {
       matchedNames: [],
+      selectedIndex: -1,
     }
   },
   mounted() {
@@ -45,10 +48,32 @@ export default {
       // Здесь можно использовать роутер Vue Router для навигации
       // Например, если у вас есть объект this.$router
       this.$router.push({ name: 'Profile', params: { username: name } });
-      
+
       // Или просто переход по URL
       // window.location.href = `/profiles/${name}`;
-    }
+    },
+    handleArrowDown() {
+      if (this.selectedIndex < this.matchedNames.length - 1) {
+        this.selectedIndex++;
+      }
+    },
+    handleArrowUp() {
+      if (this.selectedIndex > 0) {
+        this.selectedIndex--;
+      }
+    },
+    handleEnter() {
+      if (this.selectedIndex !== -1) {
+        const selectedName = this.matchedNames[this.selectedIndex];
+        this.navigateToProfile(selectedName);
+      }
+    },
   }
 }
 </script>
+
+<style scoped>
+.active {
+  background-color: rgb(165 243 252);
+}
+</style>
