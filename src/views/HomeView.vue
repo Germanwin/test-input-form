@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex justify-center items-center flex-col">
+  <div class="h-screen flex pt-32 items-center flex-col">
     <input type="text" id="elastic" @keydown.down="handleArrowDown()" @keydown.up="handleArrowUp()"
       @keydown.enter="handleEnter" class="w-80 h-12 border-2  p-4">
     <ul class="w-80">
