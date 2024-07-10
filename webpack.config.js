@@ -1,5 +1,7 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     mode: 'development', // Режим разработки
@@ -31,13 +33,20 @@ module.exports = {
         ]
     },
     plugins: [
-        new VueLoaderPlugin() // Плагин для загрузки файлов Vue
+        new VueLoaderPlugin(), // Плагин для загрузки файлов Vue
+        new HtmlWebpackPlugin({
+            template: 'dist/index.html' // Путь к вашему index.html
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
+        })
     ],
     devServer: {
         static: {
             directory: path.join(__dirname, 'dist'),
+            publicPath: '/',
         },
         compress: true,
-        port: 9000
+        port: 9000 // Порт для dev сервера
     }
 };
