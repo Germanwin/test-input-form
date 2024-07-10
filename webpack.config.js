@@ -1,52 +1,55 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
-    mode: 'development', // Режим разработки
-    entry: './src/main.js', // Точка входа вашего приложения Vue
+    entry: './src/main.js',
     output: {
-        path: path.resolve(__dirname, 'dist'), // Папка для сгенерированных файлов
-        filename: 'bundle.js' // Имя выходного файла
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     module: {
         rules: [
             {
-                test: /\.vue$/, // Регулярное выражение для файлов Vue
-                loader: 'vue-loader' // Loader для файлов Vue
+                test: /\.vue$/,
+                loader: 'vue-loader'
             },
             {
-                test: /\.js$/, // Регулярное выражение для файлов JavaScript
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader' // Используем Babel для транспиляции JavaScript
+                    loader: 'babel-loader'
                 }
             },
             {
-                test: /\.css$/, // Регулярное выражение для файлов CSS
+                test: /\.css$/,
                 use: [
                     'vue-style-loader',
-                    'css-loader'
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                config: path.resolve(__dirname, 'postcss.config.js')
+                            }
+                        }
+                    }
                 ]
             }
         ]
     },
+    resolve: {
+        extensions: ['.js', '.vue'],
+        alias: {
+            'vue$': 'vue/dist/vue.esm-bundler.js',
+            '@': path.resolve(__dirname, 'src')
+        }
+    },
     plugins: [
-        new VueLoaderPlugin(), // Плагин для загрузки файлов Vue
+        new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
-            template: 'dist/index.html' // Путь к вашему index.html
-        }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
+            template: 'public/index.html'
         })
-    ],
-    devServer: {
-        static: {
-            directory: path.join(__dirname, 'dist'),
-            publicPath: '/',
-        },
-        compress: true,
-        port: 9000 // Порт для dev сервера
-    }
+    ]
 };
